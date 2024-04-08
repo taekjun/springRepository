@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/default_layout}"
+	  layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:action="@{/empUpdate}" method="post" th:object="${empInfo}">
+		<div>
+			<label>사원번호<input type="text" th:field="*{employeeId}" readonly></label>	<!-- field는 object에 있는 값 선택해서 불러오는것. -->
+		</div>
+		<div>
+			<label>이름<input type="text" th:field="*{lastName}"></label>
+		</div>
+		<div>
+			<label>이메일<input type="text" th:field="*{email}"></label>
+		</div>
+		<div>
+			<label>입사일<input type="date" th:field="*{hireDate}"></label>
+		</div>
+		<div>
+			<label>급여<input type="number" th:field="*{salary}"></label>	
+		</div>
+		<div>
+			<button type="button" id="updateBtn">수정</button>
+		</div>
+	</form>
+	<script>
+		/* document.querySelector('#updateBtn')
+				.addEventListener('click', updateAjax);
+		
+		function validationCheck(event){
+			event.preventDefault();
+			
+			let name = document.getElementById('lastName');
+			if(name.value == ''){
+				alert('사원이름은 필수로 입력해야합니다.');
+				name.focus();
+				return;
+			}
+			
+			insertForm.submit();
+		} */
+	</script>
+	<script>
+		/* // jQuery 이용
+		$('#updateBtn').on('click', updateAjaxJq);
+		
+		function updateAjaxJq(event){
+			// Validation check
+			if(!validationCheck()) return;
+			
+			// 보낼 데이터 정리
+			let dataObj = getEmpObj();
+			
+			// Ajax
+			$.ajax('empUpdate',{
+				type : 'post',
+				//data : dataObj	QueryString방식
+				contentType : 'application/json',	//json방식
+				data : JSON.stringify(dataObj)	//json방식
+			})
+			.done(result =>{
+				if(result != null){
+					alert('정상적으로 수정되었습니다.')					
+				}else{
+					alert('수정되지 않았습니다.\n확인해주세요.')
+				}
+			})
+			.fail(err => console.log(err));
+		};
+		
+		function validationCheck(){
+			let name = $('#lastName');
+			if(name.val() == ''){
+				alert('사원이름은 필수로 입력해야합니다.');
+				name.focus();
+				return false;
+			}
+			
+			return true;
+		}
+		
+		function getEmpObj(){
+			let formAry = $('form').serializeArray();	//시리얼라이즈는 폼태그만 작동함.
+			// [{ name : 'employeeId', value : '209' },
+			//	{ name : 'lastName', value : 'Kang'}, ...]
+			
+			let formObj = {};
+			formAry.forEach(inputTag => {
+				formObj[inputTag.name] = inputTag.value;
+			})
+			// {employeeId : '209', lastName : 'Kang', ...}
+			
+			return formObj;
+		} */
+	</script>
+	<script>
+		// 자바스크립트 방식
+		document.querySelector('#updateBtn')
+				.addEventListener('click', updateAjax);
+		
+		function updateAjax(event){
+			
+			if(!validationCheck()) return;
+			
+			let dataObj = getEmpObj();
+				
+			fetch('empUpdate', {
+				method : 'post',
+				
+				headers : {
+					'content-type' : 'application/json'
+				},
+				body : JSON.stringify(dataObj)
+				
+				//body : new URLSearchParams(dataObj)	//QueryString방식	
+			})
+			.then(res => res.json())
+			.then(result => {
+				console.log(result);
+			})
+			.catch(err => console.log(err))
+		}
+		
+		function validationCheck(event){
+			let name = document.getElementById('lastName');
+			if(name.value == ''){
+				alert('사원이름은 필수로 입력해야합니다.');
+				name.focus();
+				return false;
+			}
+			return true;
+		};
+		
+		function getEmpObj(){
+			let formTag = document.querySelector('form');			
+			
+			let formData = new FormData(formTag);
+			
+			let formObj = {};
+			formData.forEach((val, key) => {
+				formObj[key] = val;
+			})
+			return formObj;
+		}
+	</script>
+</body>
+</html>

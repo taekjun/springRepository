@@ -38,12 +38,12 @@
 	</select>
 	<!-- 등록 -->
 	<insert id="insertEmp" parameterType="EmpVO">
-		<selectKey keyProperty="employeeId" 
+		<!-- <selectKey keyProperty="employeeId" 
 		           resultType="Integer" 
 		           order="BEFORE">
 			SELECT NVL(MAX(employee_id),0) + 1
 			FROM employees
-		</selectKey>
+		</selectKey> 해당 부분을 밑에 select로 뺐다. insert와 같이 돌릴지 따로 돌릴지의 차이.-->
 		INSERT INTO employees (employee_id
 		                       , last_name
 		                       , email
@@ -93,4 +93,10 @@
 		DELETE FROM employees
 		WHERE employee_id = #{eid}
 	</delete>
+	
+	<!-- 등록할 사원번호 조회 -->
+	<select id="getEmpId" resultType="EmpVO">
+		SELECT NVL(MAX(employee_id),0) + 1 as employee_id
+		FROM employees
+	</select>
 </mapper>

@@ -22,4 +22,7 @@ public interface EmpMapper {
 	// 삭제
 	public int deleteEmp(@Param("eid")int employeeId);
 	//매게변수가 두개이상 들어갈때 param 사용
+	
+	// 등록할 사원번호 조회
+	public EmpVO getEmpId();
 }
