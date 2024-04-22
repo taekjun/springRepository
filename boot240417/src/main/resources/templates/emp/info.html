@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/default_layout}"
+	  layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>사원 정보 조회</title>
+</head>
+<body>
+	<div>
+		<div>
+			<label>사원번호<input type="text" th:value="${empInfo.employeeId}" readonly></label> <!-- 컨트롤러 model에 담은값이 ${}에 들어간다. -->
+		</div>
+		<div>
+			<label>이름<input type="text" th:value="${empInfo.lastName}" readonly></label>
+		</div>
+		<div>
+			<label>이메일<input type="text" th:value="${empInfo.email}" readonly></label>
+		</div>
+		<div>
+			<label>입사일<input type="date" th:value="${#dates.format(empInfo.hireDate, 'yyyy-MM-dd')}" readonly></label>
+		</div>
+		<div>
+			<label>업무<input type="text" th:value="${empInfo.jobId}" readonly></label>
+		</div>
+		<div>
+			<label>급여<input type="number" th:value="${empInfo.salary}" readonly></label>
+			<!-- <span>[[ ${#numbers.formatInteger(empInfo.salary, 3, 'COMMA')} ]]</span> -->
+		</div>
+		<div>
+			<button type="button" th:onclick="|location.href='@{/empUpdate(employeeId=${empInfo.employeeId})}'|">수정</button>
+			<button type="button" th:onclick="|location.href='@{/empList}'|">목록</button>
+			<button type="button" id="delBtn" th:onclick="|location.href='@{/empDelete(employeeId=${empInfo.employeeId})}'|">삭제</button>
+		</div>
+	</div>
+</body>
+</html>
